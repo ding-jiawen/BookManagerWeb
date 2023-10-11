@@ -10,13 +10,14 @@ import javax.servlet.http.HttpSession;
 
 public class UserServiceImpl implements UserService {
 
+    // 验证登录
     @Override
     public boolean auth(String username, String password, HttpSession session) {
         try(SqlSession sqlSession = MybatisUtil.getSession(true)) {
             UserMapper mapper =sqlSession.getMapper(UserMapper.class);
             User user = mapper.getUser(username, password);
             if(user == null) return false;
-            // 绑定一个名称为user的user对象到一个session会话
+            // 绑定一个key为"user", value = user 对象到一个session会话
             session.setAttribute("user", user);
             return true;
         }

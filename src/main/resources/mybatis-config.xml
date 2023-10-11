@@ -14,4 +14,7 @@
             </dataSource>
         </environment>
     </environments>
+    <mappers>
+        <mapper class="com.book.dao.UserMapper"/>
+    </mappers>
 </configuration>

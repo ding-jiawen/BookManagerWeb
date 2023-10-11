@@ -16,11 +16,14 @@ public class MainFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         String url = req.getRequestURL().toString();
-        if(!url.contains("/static/") && !url.endsWith("login")) {
+        if(!url.contains("/assets/") && !url.endsWith("login")) {
             HttpSession session = req.getSession();
             User user = (User) session.getAttribute("user");
-            res.sendRedirect("login");
-            return;
+            // user不存在，说明该user从未登录过，如果想访问其他资源则重定向到login
+            if(user == null) {
+                res.sendRedirect("login");
+                return;
+            }
         }
         chain.doFilter(req,res);
     }
