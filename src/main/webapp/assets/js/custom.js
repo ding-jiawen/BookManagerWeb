@@ -342,7 +342,7 @@ Version: 1.0.0
         -----------------------------------------------------*/
         singleSlide: function() {
             if ($('.swiper-container.s1').length > 0) {
-                new Swiper('.swiper-container.s1', {
+                var slingleSlideSwiper = new Swiper('.swiper-container.s1', {
                     autoHeight: false,
                     autoplay: false,
                     loop: true,
