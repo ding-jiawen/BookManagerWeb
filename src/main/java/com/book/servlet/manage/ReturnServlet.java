@@ -1,10 +1,7 @@
-package com.book.servlet.pages;
+package com.book.servlet.manage;
 
-import com.book.entity.User;
 import com.book.service.BookService;
 import com.book.service.impl.BookServiceImpl;
-import com.book.utils.ThymeleafUtil;
-import org.thymeleaf.context.Context;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,20 +10,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/index")
-public class IndexServlet extends HttpServlet {
+@WebServlet("/return-book")
+public class ReturnServlet extends HttpServlet {
     BookService service;
 
     @Override
     public void init() throws ServletException {
         service = new BookServiceImpl();
     }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html;charset=UTF-8");
-        Context context = new Context();
-        User user = (User) req.getSession().getAttribute("user");
-        context.setVariable("borrow_list", service.getBorrowList());
-        ThymeleafUtil.process("index.html",context, resp.getWriter());
+        // 获取借阅id
+        String id = req.getParameter("id");
+        // 归还
+        service.returnBook(id);
+        // 归还后重定向回index页面
+        resp.sendRedirect("index");
     }
 }

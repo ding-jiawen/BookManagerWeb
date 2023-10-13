@@ -1,6 +1,8 @@
 package com.book.servlet.pages;
 
 import com.book.entity.User;
+import com.book.service.BookService;
+import com.book.service.impl.BookServiceImpl;
 import com.book.utils.ThymeleafUtil;
 import org.thymeleaf.context.Context;
 
@@ -18,7 +20,6 @@ public class BookServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
         Context context = new Context();
         User user = (User) req.getSession().getAttribute("user");
-        context.setVariable("nickname", user.getNickname());
         ThymeleafUtil.process("books.html",context, resp.getWriter());
     }
 }
