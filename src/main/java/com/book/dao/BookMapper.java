@@ -29,4 +29,10 @@ public interface BookMapper {
     void addBorrow(@Param("sid")int sid, @Param("bid")int bid);
     @Select("select * from book")
     List<Book> getBookList();
+
+    @Delete("delete from book where bid = #{bid}")
+    void deleteBook(int bid);
+
+    @Insert("insert into book(title, `desc`, price) values(#{title}, #{desc}, #{price})")
+    void addBook(@Param("title")String title, @Param("desc") String desc, @Param("price") double price);
 }

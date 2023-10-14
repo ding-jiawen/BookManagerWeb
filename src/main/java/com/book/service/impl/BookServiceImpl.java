@@ -9,9 +9,7 @@ import com.book.service.BookService;
 import com.book.utils.MybatisUtil;
 import org.apache.ibatis.session.SqlSession;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BookServiceImpl implements BookService {
@@ -44,7 +42,37 @@ public class BookServiceImpl implements BookService {
                     .filter(book -> !set.contains(book.getBid()))
                     .collect(Collectors.toList());
         }
+    }
 
+    @Override
+    public Map<Book, Boolean> getBookList() {
+        Set<Integer> set = new HashSet<>();
+        // 获取借阅列表
+        this.getBorrowList().forEach(borrow -> set.add(borrow.getBook_id()));
+        try(SqlSession sqlSession = MybatisUtil.getSession(true)) {
+            Map<Book, Boolean> map = new LinkedHashMap<>();
+            BookMapper mapper =sqlSession.getMapper(BookMapper.class);
+            // 存储书籍和它的借阅状态
+            // set.contains() 判断集合是否含有指定的对象
+            mapper.getBookList().forEach(book -> map.put(book, set.contains(book.getBid())));
+            return map;
+        }
+    }
+
+    @Override
+    public void deleteBook(int bid) {
+        try(SqlSession sqlSession = MybatisUtil.getSession(true)) {
+            BookMapper mapper =sqlSession.getMapper(BookMapper.class);
+            mapper.deleteBook(bid);
+        }
+    }
+
+    @Override
+    public void addBook(String title, String desc, double price) {
+        try(SqlSession sqlSession = MybatisUtil.getSession(true)) {
+            BookMapper mapper =sqlSession.getMapper(BookMapper.class);
+            mapper.addBook(title, desc, price);
+        }
     }
 
     @Override

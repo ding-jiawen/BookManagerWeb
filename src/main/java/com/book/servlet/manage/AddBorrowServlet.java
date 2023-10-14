@@ -37,9 +37,11 @@ public class AddBorrowServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 获取借阅信息的学生id和书籍id
         int sid = Integer.parseInt(req.getParameter("student"));
         int bid = Integer.parseInt(req.getParameter("book"));
         bookService.addBorrow(sid, bid);
+        // 添加借阅信息后重定向回主页
         resp.sendRedirect("index");
     }
 }
