@@ -2,6 +2,7 @@ package com.book.servlet.auth;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,13 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // 清除session，login页面中已经重定向过
         req.getSession().removeAttribute("user");
+        // 退出登录，清除cookie
+        Cookie cookie_username = new Cookie("username", "username");
+        cookie_username.setMaxAge(0); //
+        Cookie cookie_password = new Cookie("password", "password");
+        cookie_password.setMaxAge(0);
+        resp.addCookie(cookie_username);
+        resp.addCookie(cookie_password);
         resp.sendRedirect("login");
     }
 }
